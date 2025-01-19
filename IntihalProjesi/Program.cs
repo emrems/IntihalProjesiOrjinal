@@ -51,7 +51,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// burda main branchı için test yorum satırı
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
