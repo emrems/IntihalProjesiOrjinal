@@ -13,6 +13,13 @@ namespace IntihalProjesi.Repositories.Ef_core
         {
             
         }
+        public async Task<IEnumerable<Icerik>> GetAllAsync()
+        {
+            return await _context.Icerikler
+                .Include(i => i.Kullanici) // Kullanıcı bilgilerini dahil et
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Icerik>> GetActiveAssignmentsAsync()
         {
             return await _context
@@ -37,7 +44,10 @@ namespace IntihalProjesi.Repositories.Ef_core
         public async Task<Icerik> GetByIdAsync(int id)
         {
             return await _context.Icerikler
+               // .Include(i => i.Kullanici) // Kullanıcı bilgilerini dahil et
                 .FirstOrDefaultAsync(i => i.IcerikId == id);
         }
+
+
     }
 }

@@ -10,6 +10,6 @@
 
 
         // jwt kullanınca gelecek
-       // public string OlusturanKullanici { get; set; } // Öğretmenin adı (isteğe bağlı)
+        public string OlusturanKullanici { get; set; } // Öğretmenin adı (isteğe bağlı)
     }
 }

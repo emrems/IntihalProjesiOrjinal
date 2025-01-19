@@ -8,18 +8,15 @@ namespace IntihalProjesi.Profiles
     {
         public IcerikProfile()
         {
+            // Kullanıcı bilgilerini güvenli şekilde eşleme
+            CreateMap<Icerik, IcerikReadDto>()
+                .ForMember(dest => dest.OlusturanKullanici,
+                    opt => opt.MapFrom(src => src.Kullanici != null
+                        ? src.Kullanici.Ad + " " + src.Kullanici.Soyad
+                        : "Bilinmeyen Kullanıcı"));
 
-            CreateMap<Icerik, IcerikReadDto>();
             CreateMap<IcerikCreateDto, Icerik>();
             CreateMap<IcerikUpdateDto, Icerik>();
-
-
-            // jwt kullanınca olacak
-            //CreateMap<Icerik, IcerikReadDto>()
-            //    // frond endde öğrenciler ödevi oluşturan kişinin adını ve soyadını görecek
-            //    .ForMember(dest => dest.OlusturanKullanici, opt => opt.MapFrom(src => src.Kullanici.Ad + " " + src.Kullanici.Soyad));
-            //CreateMap<IcerikCreateDto, Icerik>();
-            //CreateMap<IcerikUpdateDto, Icerik>();
         }
     }
 }

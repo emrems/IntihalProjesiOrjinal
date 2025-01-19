@@ -1,5 +1,6 @@
 ﻿using IntihalProjesi.Dtos.IcerikDtos;
 using IntihalProjesi.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntihalProjesi.Controllers
@@ -63,7 +64,7 @@ namespace IntihalProjesi.Controllers
 
         }
 
-
+        
         [HttpPost]
 
         public async Task<IActionResult> CreateAssigment([FromBody] IcerikCreateDto icerik)

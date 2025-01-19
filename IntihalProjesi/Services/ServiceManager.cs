@@ -11,10 +11,10 @@ namespace IntihalProjesi.Services
 
 
 
-        public ServiceManager(IRepositoryManager manager, IMapper mapper)
+        public ServiceManager(IRepositoryManager manager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _kullaniciService = new Lazy<IKullaniciService>(() => new KullaniciManager(manager, mapper));
-            _IcerikService = new Lazy<IIcerikService>(()=> new IcerikManager(manager, mapper));
+            _IcerikService = new Lazy<IIcerikService>(()=> new IcerikManager(httpContextAccessor,manager, mapper));
             
         }
 

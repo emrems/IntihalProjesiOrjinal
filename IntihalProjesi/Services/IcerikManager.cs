@@ -3,16 +3,19 @@ using IntihalProjesi.Dtos.IcerikDtos;
 using IntihalProjesi.Models;
 using IntihalProjesi.Repositories.Contracts;
 using IntihalProjesi.Services.Contracts;
+using System.Security.Claims;
 
 namespace IntihalProjesi.Services
 {
     public class IcerikManager : IIcerikService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public IcerikManager(IRepositoryManager repository, IMapper mapper)
+        public IcerikManager(IHttpContextAccessor httpContextAccessor,IRepositoryManager repository, IMapper mapper)
         {
+            _httpContextAccessor = httpContextAccessor;
             _repository = repository;
             _mapper = mapper;
         }
@@ -31,16 +34,24 @@ namespace IntihalProjesi.Services
 
         public async Task<IcerikReadDto> CreateAsync(IcerikCreateDto icerikCreateDto)
         {
-            var icerik = _mapper.Map<Icerik>(icerikCreateDto);
+            var idClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // Şimdilik öğretmenin ID'si sabit (JWT eklenince değiştirilecek)
-            icerik.KullaniciId = 5;
+            if (string.IsNullOrEmpty(idClaim))
+            {
+                throw new UnauthorizedAccessException("Kullanıcı kimliği bulunamadı. Yetkilendirme başarısız.");
+            }
+
+            var kullaniciId = int.Parse(idClaim);
+
+            var icerik = _mapper.Map<Icerik>(icerikCreateDto);
+            icerik.KullaniciId = kullaniciId;
 
             await _repository.IcerikRepository.AddAsync(icerik);
             await _repository.save();
 
             return _mapper.Map<IcerikReadDto>(icerik);
         }
+
 
         public async Task UpdateAsync(int id, IcerikUpdateDto icerikCreateDto)
         {

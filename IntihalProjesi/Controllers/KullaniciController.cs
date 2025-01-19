@@ -1,11 +1,13 @@
 ﻿using IntihalProjesi.Dtos;
 using IntihalProjesi.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntihalProjesi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")] // Tüm endpoint'leri sadece Admin erişebilir
     public class KullaniciController : ControllerBase
     {
 
