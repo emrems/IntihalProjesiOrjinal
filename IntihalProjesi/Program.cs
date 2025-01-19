@@ -21,10 +21,14 @@ builder.Services.AddDbContext<OrjinalIntihalDbContext>(options =>
 // Repository Kaydı
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
+builder.Services.AddScoped<IIcerikRepository, IcerikRepository>();
+
 
 // Service Kaydı
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IKullaniciService, KullaniciManager>();
+
+builder.Services.AddScoped<IIcerikService, IcerikManager>();
 
 
 builder.Services.AddAutoMapper(typeof(Program));
