@@ -24,6 +24,8 @@ namespace IntihalProjesi.Controllers
             return Ok(Icerikler);
         }
 
+
+
         [HttpGet("id")]
 
         public async Task<IActionResult> GetById(int id)
@@ -44,14 +46,14 @@ namespace IntihalProjesi.Controllers
         }
 
 
-        [HttpGet("teacher/teacherId")]
+        [HttpGet("teacher/{teacherName}")]
 
-        public async Task<IActionResult> GetAllByTeacherId(int teacherId)
+        public async Task<IActionResult> GetAllByTeacherId(string teacherName)
         {
-            var icerikler = await _manager.IcerikService.GetByTeacherIdAsync(teacherId);
+            var icerikler = await _manager.IcerikService.GetByTeacherNameAsync(teacherName);
             if(icerikler == null)
             {
-                return BadRequest($"{teacherId} idli ögretmen içeriği yok");
+                return BadRequest($"{teacherName} isimli ögretmen içeriği yok");
             }
             return Ok(icerikler);
         }

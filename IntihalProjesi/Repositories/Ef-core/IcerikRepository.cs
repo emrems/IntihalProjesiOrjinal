@@ -31,13 +31,13 @@ namespace IntihalProjesi.Repositories.Ef_core
         }
 
 
-        public async Task<IEnumerable<Icerik>> GetByTeacherIdAsync(int teacherId)
+        public async Task<IEnumerable<Icerik>> GetByTeacherNameAsync(string teacherName)
         {
             return await _context
-                    .Icerikler
-                    .Where(k=>k.KullaniciId == teacherId)
-                    .ToListAsync();
-
+                .Icerikler
+                .Include(k => k.Kullanici) // Kullanici tablosunu dahil etmemiz lazım zaten içerik tablosuna eklemişti nagivation property olarak
+                .Where(k => k.Kullanici.Ad == teacherName) // Öğretmen adına göre filtrele
+                .ToListAsync(); // Sorguyu çalıştır ve liste olarak döndür
         }
 
 

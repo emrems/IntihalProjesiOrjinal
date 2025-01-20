@@ -9,7 +9,7 @@ namespace IntihalProjesi.Services.Contracts
         Task<IEnumerable<IcerikReadDto>> GetAllAsync();
 
         // Belirli bir öğretmene ait ödevleri listelemek
-        Task<IEnumerable<IcerikReadDto>> GetByTeacherIdAsync(int teacherId);
+        Task<IEnumerable<IcerikReadDto>> GetByTeacherNameAsync(string teacherName);
         Task<IcerikReadDto> GetByIdAsync(int id);
         // Bitiş tarihi geçmemiş ödevleri listeleme
         Task<IEnumerable<Icerik>> GetActiveAssignmentsAsync();

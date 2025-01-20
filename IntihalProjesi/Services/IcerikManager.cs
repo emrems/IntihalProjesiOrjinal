@@ -26,9 +26,9 @@ namespace IntihalProjesi.Services
             return _mapper.Map<IEnumerable<IcerikReadDto>>(icerikler);
         }
 
-        public async Task<IEnumerable<IcerikReadDto>> GetByTeacherIdAsync(int teacherId)
+        public async Task<IEnumerable<IcerikReadDto>> GetByTeacherNameAsync(string teacherName)
         {
-            var icerikler = await _repository.IcerikRepository.GetByTeacherIdAsync(teacherId);
+            var icerikler = await _repository.IcerikRepository.GetByTeacherNameAsync(teacherName);
             return _mapper.Map<IEnumerable<IcerikReadDto>>(icerikler);
         }
 

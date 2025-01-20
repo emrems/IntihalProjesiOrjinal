@@ -5,7 +5,7 @@ namespace IntihalProjesi.Repositories.Contracts
     public interface IIcerikRepository : IRepositorybase<Icerik>
     {
         // Ödevleri belirli bir öğretmene göre listeleme
-        Task<IEnumerable<Icerik>> GetByTeacherIdAsync(int teacherId);
+        Task<IEnumerable<Icerik>> GetByTeacherNameAsync(string teacherName);
 
         // Bitiş tarihi geçmemiş ödevleri listeleme
         Task<IEnumerable<Icerik>> GetActiveAssignmentsAsync();
