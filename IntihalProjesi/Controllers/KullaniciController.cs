@@ -7,7 +7,7 @@ namespace IntihalProjesi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")] // Tüm endpoint'leri sadece Admin erişebilir
+   // [Authorize(Roles = "Admin")] // Tüm endpoint'leri sadece Admin erişebilir
     public class KullaniciController : ControllerBase
     {
 
