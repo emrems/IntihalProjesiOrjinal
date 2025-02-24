@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace IntihalProjesi.Repositories.Ef_core
 {
-    public class RepositoryBase<T> : IRepositorybase<T>
+    public abstract class RepositoryBase<T> : IRepositorybase<T>
         where T : class
     {
         protected readonly OrjinalIntihalDbContext _context;
@@ -34,6 +34,7 @@ namespace IntihalProjesi.Repositories.Ef_core
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
+            
         }
 
         public async Task<T> GetByIdAsync(int id)

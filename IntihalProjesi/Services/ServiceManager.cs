@@ -8,6 +8,7 @@ namespace IntihalProjesi.Services
     {
         private readonly Lazy<IKullaniciService> _kullaniciService;
         private readonly Lazy<IIcerikService> _IcerikService;
+        private readonly Lazy<IDosyaService> _DosyaService;
 
 
 
@@ -15,11 +16,14 @@ namespace IntihalProjesi.Services
         {
             _kullaniciService = new Lazy<IKullaniciService>(() => new KullaniciManager(manager, mapper));
             _IcerikService = new Lazy<IIcerikService>(()=> new IcerikManager(httpContextAccessor,manager, mapper));
+            _DosyaService = new Lazy<IDosyaService>(() => new DosyaManager(manager));
             
         }
 
         public IKullaniciService KullaniciService => _kullaniciService.Value;
 
         public IIcerikService IcerikService => _IcerikService.Value;
+        public IDosyaService DosyaService => _DosyaService.Value;
+
     }
 }

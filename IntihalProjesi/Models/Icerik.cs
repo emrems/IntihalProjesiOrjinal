@@ -5,7 +5,7 @@ namespace IntihalProjesi.Models
     public class Icerik
     {
 
-        public int IcerikId { get; set; } // Primary Key
+        public int IcerikId { get; set; }
         public string Baslik { get; set; }
         public string Aciklama { get; set; }
         public DateTime OlusturmaTarihi { get; set; }

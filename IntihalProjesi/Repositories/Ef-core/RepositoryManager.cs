@@ -8,6 +8,7 @@ namespace IntihalProjesi.Repositories.Ef_core
         private readonly OrjinalIntihalDbContext _context;
         private readonly Lazy<IKullaniciRepository> _kullaniciRepository;
         private readonly Lazy<IIcerikRepository> _IcerikRepository;
+        private readonly Lazy<IDosyaRepository> _dosyaRepository;
 
 
         public RepositoryManager(OrjinalIntihalDbContext context)
@@ -15,6 +16,7 @@ namespace IntihalProjesi.Repositories.Ef_core
             _context = context;
             _kullaniciRepository = new Lazy<IKullaniciRepository>(() => new KullaniciRepository(context));
             _IcerikRepository = new Lazy<IIcerikRepository>(() => new IcerikRepository(context));
+            _dosyaRepository = new Lazy<IDosyaRepository>(() => new DosyaRepository(context));
             
         }
 
@@ -22,6 +24,8 @@ namespace IntihalProjesi.Repositories.Ef_core
         public IKullaniciRepository KullaniciRepository => _kullaniciRepository.Value;// sadece KullaniciRepository dediğimde newlencek
 
         public IIcerikRepository IcerikRepository => _IcerikRepository.Value;
+
+        public IDosyaRepository DosyaRepository => _dosyaRepository.Value;
 
         public async Task save()
         {

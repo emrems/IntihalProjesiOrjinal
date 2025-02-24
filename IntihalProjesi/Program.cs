@@ -26,11 +26,14 @@ builder.Services.AddDbContext<OrjinalIntihalDbContext>(options =>
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
 builder.Services.AddScoped<IIcerikRepository, IcerikRepository>();
+builder.Services.AddScoped<IDosyaRepository, DosyaRepository>();
 
 // Service Kaydı
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IKullaniciService, KullaniciManager>();
 builder.Services.AddScoped<IIcerikService, IcerikManager>();
+builder.Services.AddScoped<IDosyaService, DosyaManager>();
+
 
 // JWT Service Kaydı
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();

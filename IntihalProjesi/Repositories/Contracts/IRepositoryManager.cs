@@ -4,6 +4,7 @@
     {
         IKullaniciRepository KullaniciRepository { get; }
         IIcerikRepository IcerikRepository { get; }
+        IDosyaRepository DosyaRepository { get; }
         Task save();
     }
 }

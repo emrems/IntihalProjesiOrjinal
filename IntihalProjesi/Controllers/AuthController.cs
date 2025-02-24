@@ -32,13 +32,14 @@ namespace IntihalProjesi.Controllers
                 return Unauthorized("Geçersiz e-posta veya şifre.");
             }
 
-            // Kullanıcının rolüne göre token oluştur
+            // role göre token oluşturma
             var token = _jwtHelper.GenerateToken(kullanici.KullaniciId, kullanici.Rol);
 
             return Ok(new
             {
                 Token = token,
-                Rol = kullanici.Rol
+                Rol = kullanici.Rol,
+                Id = kullanici.KullaniciId
             });
         }
     }
