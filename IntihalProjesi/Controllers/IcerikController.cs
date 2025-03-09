@@ -45,6 +45,25 @@ namespace IntihalProjesi.Controllers
             }
         }
 
+        [HttpGet("teacher/{teacherId}/all")]
+        public async Task<IActionResult> GetAssigmentByTeacherId(int teacherId)
+        {
+            try
+            {
+                var assigments = await _manager.IcerikService.GetByTeacherIdAsync(teacherId);
+                if (assigments == null)
+                {
+                    return BadRequest($"{teacherId} id'sine ait ödev bulunamadı.");
+                }
+                return Ok(assigments);
+
+            }catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Bir hata oluştu.", Error = ex.Message });
+            }
+        }
+
+
 
         [HttpGet("teacher/{teacherName}")]
 

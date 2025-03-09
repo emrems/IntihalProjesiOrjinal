@@ -12,6 +12,9 @@ namespace IntihalProjesi.Repositories.Contracts
 
         // Belirli bir ID'ye göre ödevi alma
         Task<Icerik> GetByIdAsync(int id);
+
+        //belli öğrtemenId'ye göre ödevleri getir
+        Task<IEnumerable<Icerik>> GetByTeacherIdAsync(int teacherId);
         Task<IEnumerable<Icerik>> GetAllAsync(); // Tüm içerikleri getir
 
 

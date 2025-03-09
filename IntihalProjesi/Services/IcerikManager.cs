@@ -3,6 +3,7 @@ using IntihalProjesi.Dtos.IcerikDtos;
 using IntihalProjesi.Models;
 using IntihalProjesi.Repositories.Contracts;
 using IntihalProjesi.Services.Contracts;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Security.Claims;
 
 namespace IntihalProjesi.Services
@@ -83,6 +84,16 @@ namespace IntihalProjesi.Services
         {
             return await _repository.IcerikRepository.GetActiveAssignmentsAsync();
 
+        }
+
+        public async Task<IEnumerable<IcerikReadDto>> GetByTeacherIdAsync(int teacherId)
+        {
+            var assigments = await _repository.IcerikRepository.GetByTeacherIdAsync(teacherId);
+            if(assigments == null)
+            {
+                return null;
+            }
+            return _mapper.Map<IEnumerable<IcerikReadDto>>(assigments);
         }
     }
 }

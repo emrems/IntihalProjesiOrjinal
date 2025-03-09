@@ -48,6 +48,12 @@ namespace IntihalProjesi.Repositories.Ef_core
                 .FirstOrDefaultAsync(i => i.IcerikId == id);
         }
 
-
+        public async  Task<IEnumerable<Icerik>> GetByTeacherIdAsync(int teacherId)
+        {
+            return await _context.Icerikler
+               // .Include(i => i.Kullanici) // Kullanıcı bilgilerini dahil et detay göstermek için
+                .Where(i => i.KullaniciId == teacherId)
+                .ToListAsync();
+        }
     }
 }
