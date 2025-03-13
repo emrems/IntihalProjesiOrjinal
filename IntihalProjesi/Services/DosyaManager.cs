@@ -24,5 +24,25 @@ namespace IntihalProjesi.Services
             }
             return dosylar;
         }
+
+        public async Task<Dosya> GetById(int id)
+        {
+            var dosya = await _manager.DosyaRepository.GetById(id);
+            if (dosya == null)
+            {
+                throw new Exception("Dosya bulunamadı.");
+            }
+            return dosya;
+        }
+
+        public async Task<IEnumerable<Dosya>> GetDosyaByIdAsync(int id)
+        {
+            var dosyalar = await _manager.DosyaRepository.GetDosyaByIdAsync(id);
+            if (dosyalar == null)
+            {
+                throw new Exception("Dosya bulunamadı.");
+            }
+            return dosyalar;
+        }
     }
 }
