@@ -93,7 +93,10 @@ namespace IntihalProjesi.Controllers
             if(icerik == null)
             {
                 return BadRequest();
+
             }
+            
+
 
             await _manager.IcerikService.CreateAsync(icerik);
             return Ok(icerik);
