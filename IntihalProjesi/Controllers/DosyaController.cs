@@ -1,4 +1,5 @@
-﻿using IntihalProjesi.Services.Contracts;
+﻿
+using IntihalProjesi.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
