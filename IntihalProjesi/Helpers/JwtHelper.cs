@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using IntihalProjesi.Helpers.Contract;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,37 @@ public class JwtHelper : IJwtHelper
         _key = configuration["JWT:Key"];
         _issuer = configuration["JWT:Issuer"];
         _audience = configuration["JWT:Audience"];
+    }
+
+    public (int KullaniciId, string Rol)? DecodeToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        try
+        {
+            var jwtToken = handler.ReadJwtToken(token);
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if (userIdClaim == null || roleClaim == null)
+                return null;
+
+            return (int.Parse(userIdClaim), roleClaim);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomNumber);
+        }
+        return Convert.ToBase64String(randomNumber);
     }
 
     public string GenerateToken(int kullaniciId, string rol)

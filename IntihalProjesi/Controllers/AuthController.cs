@@ -20,6 +20,7 @@ namespace IntihalProjesi.Controllers
             _jwtHelper = jwtHelper;
         }
 
+       
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
@@ -32,15 +33,63 @@ namespace IntihalProjesi.Controllers
                 return Unauthorized("Geçersiz e-posta veya şifre.");
             }
 
-            // role göre token oluşturma
-            var token = _jwtHelper.GenerateToken(kullanici.KullaniciId, kullanici.Rol);
+            // Access ve Refresh Token oluşturma
+            var accessToken = _jwtHelper.GenerateToken(kullanici.KullaniciId, kullanici.Rol);
+            var refreshToken = _jwtHelper.GenerateRefreshToken();
+
+            // Refresh Token'ı Cookie'ye ekle
+            Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(7)
+            });
 
             return Ok(new
             {
-                Token = token,
+                Token = accessToken,
+                RefreshToken = refreshToken, 
                 Rol = kullanici.Rol,
                 Id = kullanici.KullaniciId
             });
+        }
+
+        
+        [HttpPost("refresh")]
+        public IActionResult RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+                return Unauthorized("Refresh token bulunamadı");
+
+            // Refresh Token'dan kullanıcı ID ve rolünü al
+            var userInfo = _jwtHelper.DecodeToken(refreshToken);
+            if (userInfo == null)
+                return Unauthorized("Geçersiz refresh token");
+
+            // Yeni Access Token oluştur
+            var newAccessToken = _jwtHelper.GenerateToken(userInfo.Value.KullaniciId, userInfo.Value.Rol);
+            var newRefreshToken = _jwtHelper.GenerateRefreshToken();
+
+            // Yeni Refresh Token'ı Cookie'ye ekle
+            Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(7)
+            });
+
+            return Ok(new { Token = newAccessToken });
+        }
+
+        
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("refreshToken");
+            return Ok(new { Message = "Başarıyla çıkış yapıldı." });
         }
     }
 }
