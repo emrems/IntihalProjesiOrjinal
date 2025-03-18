@@ -48,10 +48,11 @@ namespace IntihalProjesi.Controllers
 
             return Ok(new
             {
-                Token = accessToken,
-                RefreshToken = refreshToken, 
-                Rol = kullanici.Rol,
-                Id = kullanici.KullaniciId
+                token = accessToken,
+                refreshToken = refreshToken, 
+                rol = kullanici.Rol,
+                id = kullanici.KullaniciId,
+                userName = kullanici.Ad+" "+kullanici.Soyad
             });
         }
 
