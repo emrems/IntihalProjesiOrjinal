@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntihalProjesi.Migrations
 {
     [DbContext(typeof(OrjinalIntihalDbContext))]
-    [Migration("20250118193714_UpdatedDosyaYoluToCleanedPath")]
-    partial class UpdatedDosyaYoluToCleanedPath
+    [Migration("20250322142957_adminEklendi")]
+    partial class adminEklendi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,6 @@ namespace IntihalProjesi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DosyaId"));
 
                     b.Property<string>("CleanedPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IcerikId")
@@ -141,6 +140,17 @@ namespace IntihalProjesi.Migrations
                     b.HasKey("KullaniciId");
 
                     b.ToTable("Kullanicilar");
+
+                    b.HasData(
+                        new
+                        {
+                            KullaniciId = 1,
+                            Ad = "emre",
+                            Eposta = "emre@gmail.com",
+                            Rol = "Admin",
+                            Sifre = "emre123",
+                            Soyad = "almamış"
+                        });
                 });
 
             modelBuilder.Entity("IntihalProjesi.Models.BenzerlikSonucu", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntihalProjesi.Migrations
 {
     /// <inheritdoc />
-    public partial class database : Migration
+    public partial class ilk : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,7 +57,7 @@ namespace IntihalProjesi.Migrations
                 {
                     DosyaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DosyaYolu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CleanedPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KullaniciId = table.Column<int>(type: "int", nullable: false),
                     IcerikId = table.Column<int>(type: "int", nullable: false)
                 },

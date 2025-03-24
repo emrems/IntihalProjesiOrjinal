@@ -1,8 +1,6 @@
 ﻿using IntihalProjesi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Security.Cryptography;
 
 namespace IntihalProjesi.Repositories.Config
 {
@@ -42,7 +40,7 @@ namespace IntihalProjesi.Repositories.Config
                 .HasOne(d => d.Kullanici)
                 .WithMany()
                 .HasForeignKey(d => d.KullaniciId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // BenzerlikSonucu (Primary Key ve ilişkiler)
             modelBuilder.Entity<BenzerlikSonucu>()
@@ -51,12 +49,25 @@ namespace IntihalProjesi.Repositories.Config
                 .HasOne(b => b.IlkDosya)
                 .WithMany()
                 .HasForeignKey(b => b.IlkDosyaId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<BenzerlikSonucu>()
                 .HasOne(b => b.IkinciDosya)
                 .WithMany()
                 .HasForeignKey(b => b.IkinciDosyaId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Admin kullanıcısını eklemek
+            modelBuilder.Entity<Kullanici>().HasData(
+                new Kullanici
+                {
+                    KullaniciId = 1,
+                    Ad = "emre",
+                    Soyad = "almamış",
+                    Eposta = "emre@gmail.com",
+                    Sifre = "emre123", // Şifreyi şifrelemeniz iyi olur!
+                    Rol = "Admin"
+                }
+            );
         }
     }
 }

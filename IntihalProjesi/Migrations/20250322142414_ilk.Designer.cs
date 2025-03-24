@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntihalProjesi.Migrations
 {
     [DbContext(typeof(OrjinalIntihalDbContext))]
-    [Migration("20250118161233_database")]
-    partial class database
+    [Migration("20250322142414_ilk")]
+    partial class ilk
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,8 +59,7 @@ namespace IntihalProjesi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DosyaId"));
 
-                    b.Property<string>("DosyaYolu")
-                        .IsRequired()
+                    b.Property<string>("CleanedPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IcerikId")
