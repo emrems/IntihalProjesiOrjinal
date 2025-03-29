@@ -37,6 +37,7 @@ namespace IntihalProjesi.Controllers
             var accessToken = _jwtHelper.GenerateToken(kullanici.KullaniciId, kullanici.Rol);
             var refreshToken = _jwtHelper.GenerateRefreshToken();
 
+
             // Refresh Token'ı Cookie'ye ekle
             Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
             {

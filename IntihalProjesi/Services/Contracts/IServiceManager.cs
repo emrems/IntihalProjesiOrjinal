@@ -5,5 +5,6 @@
         IKullaniciService KullaniciService { get; }
         IIcerikService IcerikService { get; }
         IDosyaService DosyaService { get; }
+        IBenzerlikSonucuService BenzerlikSonucuService { get; }
     }
 }

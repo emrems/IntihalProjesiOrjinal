@@ -26,7 +26,7 @@ namespace IntihalProjesi.Repositories.Ef_core
             return await _context.Set<Dosya>()
                                  .Where(x => x.IcerikId == id)
                                  .Include(x => x.Kullanici)  // Kullanıcı bilgilerini ekle
-                              //   .Include(x => x.Icerik)    // İçerik bilgilerini ekle
+                               // .Include(x => x.Icerik)    // İçerik bilgilerini ekle
                                  .ToListAsync();
         }
 

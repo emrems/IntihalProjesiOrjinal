@@ -27,12 +27,14 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
 builder.Services.AddScoped<IIcerikRepository, IcerikRepository>();
 builder.Services.AddScoped<IDosyaRepository, DosyaRepository>();
+builder.Services.AddScoped<IBenzerlikSonuclariRepository, BenzerlikSonuclariRepository>();
 
 // Service Kaydı
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IKullaniciService, KullaniciManager>();
 builder.Services.AddScoped<IIcerikService, IcerikManager>();
 builder.Services.AddScoped<IDosyaService, DosyaManager>();
+builder.Services.AddScoped<IBenzerlikSonucuService, BenzerlikSonucuManager>();
 
 
 // JWT Service Kaydı
