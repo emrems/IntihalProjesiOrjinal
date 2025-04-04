@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using IntihalProjesi.Helpers.Contract;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -28,6 +28,7 @@ builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
 builder.Services.AddScoped<IIcerikRepository, IcerikRepository>();
 builder.Services.AddScoped<IDosyaRepository, DosyaRepository>();
 builder.Services.AddScoped<IBenzerlikSonuclariRepository, BenzerlikSonuclariRepository>();
+builder.Services.AddScoped<IBildirimRepository, BildirimRepository>();
 
 // Service Kaydı
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
@@ -35,7 +36,7 @@ builder.Services.AddScoped<IKullaniciService, KullaniciManager>();
 builder.Services.AddScoped<IIcerikService, IcerikManager>();
 builder.Services.AddScoped<IDosyaService, DosyaManager>();
 builder.Services.AddScoped<IBenzerlikSonucuService, BenzerlikSonucuManager>();
-
+builder.Services.AddScoped<IBildirimService, BildirimManager>();
 
 // JWT Service Kaydı
 builder.Services.AddScoped<IJwtHelper, JwtHelper>();
@@ -46,10 +47,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // CORS Policy Tanımı
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        builder => builder.WithOrigins("http://localhost:5173")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod());
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
 // JWT Ayarlarını Yükle
@@ -68,15 +72,15 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"])),
+        NameClaimType = ClaimTypes.NameIdentifier
     };
 });
+
 // HttpContext'e erişim için hizmet ekleme
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
-
-app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -87,6 +91,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Middleware sırası çok önemli!
+app.UseRouting();
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntihalProjesi.Migrations
 {
     /// <inheritdoc />
-    public partial class ilk : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,7 +48,35 @@ namespace IntihalProjesi.Migrations
                         column: x => x.KullaniciId,
                         principalTable: "Kullanicilar",
                         principalColumn: "KullaniciId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bildirimler",
+                columns: table => new
+                {
+                    BildirimId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Mesaj = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Okundu = table.Column<bool>(type: "bit", nullable: false),
+                    OlusturmaTarihi = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    KullaniciId = table.Column<int>(type: "int", nullable: false),
+                    IcerikId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bildirimler", x => x.BildirimId);
+                    table.ForeignKey(
+                        name: "FK_Bildirimler_Icerikler_IcerikId",
+                        column: x => x.IcerikId,
+                        principalTable: "Icerikler",
+                        principalColumn: "IcerikId");
+                    table.ForeignKey(
+                        name: "FK_Bildirimler_Kullanicilar_KullaniciId",
+                        column: x => x.KullaniciId,
+                        principalTable: "Kullanicilar",
+                        principalColumn: "KullaniciId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,7 +97,7 @@ namespace IntihalProjesi.Migrations
                         column: x => x.IcerikId,
                         principalTable: "Icerikler",
                         principalColumn: "IcerikId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Dosyalar_Kullanicilar_KullaniciId",
                         column: x => x.KullaniciId,
@@ -105,6 +133,11 @@ namespace IntihalProjesi.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Kullanicilar",
+                columns: new[] { "KullaniciId", "Ad", "Eposta", "Rol", "Sifre", "Soyad" },
+                values: new object[] { 1, "emre", "emre@gmail.com", "Admin", "emre123", "almamış" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BenzerlikSonuclari_IkinciDosyaId",
                 table: "BenzerlikSonuclari",
@@ -114,6 +147,16 @@ namespace IntihalProjesi.Migrations
                 name: "IX_BenzerlikSonuclari_IlkDosyaId",
                 table: "BenzerlikSonuclari",
                 column: "IlkDosyaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bildirimler_IcerikId",
+                table: "Bildirimler",
+                column: "IcerikId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bildirimler_KullaniciId",
+                table: "Bildirimler",
+                column: "KullaniciId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Dosyalar_IcerikId",
@@ -136,6 +179,9 @@ namespace IntihalProjesi.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BenzerlikSonuclari");
+
+            migrationBuilder.DropTable(
+                name: "Bildirimler");
 
             migrationBuilder.DropTable(
                 name: "Dosyalar");

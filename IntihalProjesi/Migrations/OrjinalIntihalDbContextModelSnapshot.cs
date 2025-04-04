@@ -48,6 +48,39 @@ namespace IntihalProjesi.Migrations
                     b.ToTable("BenzerlikSonuclari");
                 });
 
+            modelBuilder.Entity("IntihalProjesi.Models.Bildirim", b =>
+                {
+                    b.Property<int>("BildirimId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BildirimId"));
+
+                    b.Property<int?>("IcerikId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KullaniciId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Mesaj")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Okundu")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OlusturmaTarihi")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BildirimId");
+
+                    b.HasIndex("IcerikId");
+
+                    b.HasIndex("KullaniciId");
+
+                    b.ToTable("Bildirimler");
+                });
+
             modelBuilder.Entity("IntihalProjesi.Models.Dosya", b =>
                 {
                     b.Property<int>("DosyaId")
@@ -155,13 +188,13 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Dosya", "IkinciDosya")
                         .WithMany()
                         .HasForeignKey("IkinciDosyaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IntihalProjesi.Models.Dosya", "IlkDosya")
                         .WithMany()
                         .HasForeignKey("IlkDosyaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("IkinciDosya");
@@ -169,18 +202,33 @@ namespace IntihalProjesi.Migrations
                     b.Navigation("IlkDosya");
                 });
 
+            modelBuilder.Entity("IntihalProjesi.Models.Bildirim", b =>
+                {
+                    b.HasOne("IntihalProjesi.Models.Icerik", null)
+                        .WithMany("Bildirimler")
+                        .HasForeignKey("IcerikId");
+
+                    b.HasOne("IntihalProjesi.Models.Kullanici", "Kullanici")
+                        .WithMany("Bildirimler")
+                        .HasForeignKey("KullaniciId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Kullanici");
+                });
+
             modelBuilder.Entity("IntihalProjesi.Models.Dosya", b =>
                 {
                     b.HasOne("IntihalProjesi.Models.Icerik", "Icerik")
                         .WithMany("Dosyalar")
                         .HasForeignKey("IcerikId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IntihalProjesi.Models.Kullanici", "Kullanici")
                         .WithMany()
                         .HasForeignKey("KullaniciId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Icerik");
@@ -193,7 +241,7 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Kullanici", "Kullanici")
                         .WithMany("Icerikler")
                         .HasForeignKey("KullaniciId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Kullanici");
@@ -201,11 +249,15 @@ namespace IntihalProjesi.Migrations
 
             modelBuilder.Entity("IntihalProjesi.Models.Icerik", b =>
                 {
+                    b.Navigation("Bildirimler");
+
                     b.Navigation("Dosyalar");
                 });
 
             modelBuilder.Entity("IntihalProjesi.Models.Kullanici", b =>
                 {
+                    b.Navigation("Bildirimler");
+
                     b.Navigation("Icerikler");
                 });
 #pragma warning restore 612, 618

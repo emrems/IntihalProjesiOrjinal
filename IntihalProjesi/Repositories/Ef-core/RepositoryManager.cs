@@ -10,6 +10,7 @@ namespace IntihalProjesi.Repositories.Ef_core
         private readonly Lazy<IIcerikRepository> _IcerikRepository;
         private readonly Lazy<IDosyaRepository> _dosyaRepository;
         private readonly Lazy<IBenzerlikSonuclariRepository> _benzerlikSonuclari;
+       private readonly Lazy<IBildirimRepository> _bildirimRepository;
 
 
         public RepositoryManager(OrjinalIntihalDbContext context,IBenzerlikSonuclariRepository benzerlikSonuclari)
@@ -19,6 +20,7 @@ namespace IntihalProjesi.Repositories.Ef_core
             _IcerikRepository = new Lazy<IIcerikRepository>(() => new IcerikRepository(context));
             _dosyaRepository = new Lazy<IDosyaRepository>(() => new DosyaRepository(context));
             _benzerlikSonuclari = new Lazy<IBenzerlikSonuclariRepository>(() => new BenzerlikSonuclariRepository(context));
+            _bildirimRepository = new Lazy<IBildirimRepository>(() => new BildirimRepository(context));
         }
 
         // KullaniciRepository çağırdığımda KullaniciRepository sayfasına gidip ordaki özellikleri kullanabilirim. 
@@ -29,6 +31,7 @@ namespace IntihalProjesi.Repositories.Ef_core
         public IDosyaRepository DosyaRepository => _dosyaRepository.Value;
 
         public IBenzerlikSonuclariRepository BenzerlikSonuclariRepository => _benzerlikSonuclari.Value;
+        public IBildirimRepository BildirimRepository => _bildirimRepository.Value;
 
         public async Task save()
         {

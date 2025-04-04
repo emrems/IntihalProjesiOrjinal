@@ -11,5 +11,6 @@
 
         // Navigation Properties
         public ICollection<Icerik> Icerikler { get; set; } // Kullanıcının oluşturduğu içerikler
+        public ICollection<Bildirim> Bildirimler { get; set; } = new List<Bildirim>();
     }
 }

@@ -14,7 +14,8 @@ namespace IntihalProjesi.Models
         public int KullaniciId { get; set; } // Foreign Key
         public Kullanici Kullanici { get; set; } // Navigation Property
 
-        // Navigation Properties
+       
         public ICollection<Dosya> Dosyalar { get; set; } // İçeriğe bağlı dosyalar
+        public ICollection<Bildirim> Bildirimler { get; set; } = new List<Bildirim>();
     }
 }

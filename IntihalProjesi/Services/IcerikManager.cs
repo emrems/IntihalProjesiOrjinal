@@ -13,6 +13,7 @@ namespace IntihalProjesi.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
+        private readonly IBildirimService _bildirimService;
 
         public IcerikManager(IHttpContextAccessor httpContextAccessor,IRepositoryManager repository, IMapper mapper)
         {
