@@ -1,7 +1,8 @@
-﻿
-using IntihalProjesi.Services.Contracts;
+﻿using IntihalProjesi.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Threading.Tasks;
+using Aspose.Words; 
 
 namespace IntihalProjesi.Controllers
 {
@@ -15,11 +16,12 @@ namespace IntihalProjesi.Controllers
         {
             _manager = manager;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetallDosya()
         {
-            var dosyalar=  await _manager.DosyaService.GetAllDosya();
-            if(dosyalar == null)
+            var dosyalar = await _manager.DosyaService.GetAllDosya();
+            if (dosyalar == null)
             {
                 return NotFound("dosyalar bulunamadı");
             }
@@ -66,17 +68,42 @@ namespace IntihalProjesi.Controllers
             }
 
             var filePath = dosya.CleanedPath;
+            if (!string.IsNullOrEmpty(filePath) && filePath.EndsWith("_cleaned.txt"))
+            {
+                filePath = filePath.Replace("_cleaned.txt", "");
+            }
+
             if (!System.IO.File.Exists(filePath))
             {
                 return NotFound();
             }
 
-            // Dosya türüne göre uygun content-type belirle
-            var contentType = GetContentType(filePath);
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            var extension = Path.GetExtension(filePath).ToLowerInvariant();
 
-            // tarayıcıda görüntüleme için inline olarak gönder
-            return File(fileBytes, contentType);
+            if (extension == ".docx")
+            {
+                try
+                {
+                    Document doc = new Document(filePath);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        doc.Save(ms, SaveFormat.Pdf);
+                        return File(ms.ToArray(), "application/pdf");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                    return StatusCode(500, $"docx'ten PDF'e dönüştürme sırasında bir hata oluştu: {ex.Message}");
+                }
+            }
+            else
+            {
+                // Diğer dosya türlerini doğrudan görüntüle
+                var contentType = GetContentType(filePath);
+                var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                return File(fileBytes, contentType);
+            }
         }
 
         private string GetContentType(string path)

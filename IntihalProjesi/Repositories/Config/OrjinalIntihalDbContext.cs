@@ -35,12 +35,12 @@ namespace IntihalProjesi.Repositories.Config
                 .HasOne(d => d.Icerik)
                 .WithMany(i => i.Dosyalar)
                 .HasForeignKey(d => d.IcerikId)
-                .OnDelete(DeleteBehavior.Restrict); // Cascade yerine Restrict kullandık.
+                .OnDelete(DeleteBehavior.Restrict); 
             modelBuilder.Entity<Dosya>()
                 .HasOne(d => d.Kullanici)
                 .WithMany()
                 .HasForeignKey(d => d.KullaniciId)
-                .OnDelete(DeleteBehavior.Restrict); // Cascade yerine Restrict kullandık.
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // BenzerlikSonucu (Primary Key ve ilişkiler)
             modelBuilder.Entity<BenzerlikSonucu>()
@@ -50,20 +50,20 @@ namespace IntihalProjesi.Repositories.Config
                 .HasOne(b => b.IlkDosya)
                 .WithMany()
                 .HasForeignKey(b => b.IlkDosyaId)
-                .OnDelete(DeleteBehavior.Restrict);  // Cascade yerine Restrict kullandık.
+                .OnDelete(DeleteBehavior.Restrict);  
 
             modelBuilder.Entity<BenzerlikSonucu>()
                 .HasOne(b => b.IkinciDosya)
                 .WithMany()
                 .HasForeignKey(b => b.IkinciDosyaId)
-                .OnDelete(DeleteBehavior.Restrict);  // Cascade yerine Restrict kullandık.
+                .OnDelete(DeleteBehavior.Restrict);  
 
             // Bildirim (Primary Key ve ilişkiler)
             modelBuilder.Entity<Bildirim>()
-                .HasOne(b => b.Kullanici)  // Bildirim bir kullanıcıya ait
-                .WithMany(k => k.Bildirimler) // Bir kullanıcının birden fazla bildirimi olabilir
+                .HasOne(b => b.Kullanici)  
+                .WithMany(k => k.Bildirimler) 
                 .HasForeignKey(b => b.KullaniciId)
-                .OnDelete(DeleteBehavior.Restrict);  // Kullanıcı silindiğinde bildirim silinmesin
+                .OnDelete(DeleteBehavior.Restrict);  
 
            
 
