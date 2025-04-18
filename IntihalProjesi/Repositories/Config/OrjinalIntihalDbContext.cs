@@ -56,7 +56,13 @@ namespace IntihalProjesi.Repositories.Config
                 .HasOne(b => b.IkinciDosya)
                 .WithMany()
                 .HasForeignKey(b => b.IkinciDosyaId)
-                .OnDelete(DeleteBehavior.Restrict);  
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BenzerlikSonucu>()
+                .HasOne(b => b.Icerik)
+                .WithMany()
+                .HasForeignKey(b => b.IcerikId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Bildirim (Primary Key ve ilişkiler)
             modelBuilder.Entity<Bildirim>()

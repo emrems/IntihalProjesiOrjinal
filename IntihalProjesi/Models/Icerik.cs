@@ -8,6 +8,7 @@ namespace IntihalProjesi.Models
         public int IcerikId { get; set; }
         public string Baslik { get; set; }
         public string Aciklama { get; set; }
+        public string IcerikTuru { get; set; } 
         public DateTime OlusturmaTarihi { get; set; }
         public DateTime? BitisTarihi { get; set; }
 

@@ -104,7 +104,7 @@ namespace IntihalProjesi.Controllers
 
 
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
 
         public async Task<IActionResult> UpdateAssigment(int id, [FromBody] IcerikUpdateDto icerik) 
         {
@@ -119,6 +119,7 @@ namespace IntihalProjesi.Controllers
                 return BadRequest();
             }
             await _manager.IcerikService.UpdateAsync(id,icerik);
+            
             return Ok(icerik);
         }
 
