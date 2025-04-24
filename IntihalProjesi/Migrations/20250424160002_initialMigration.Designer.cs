@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntihalProjesi.Migrations
 {
     [DbContext(typeof(OrjinalIntihalDbContext))]
-    [Migration("20250404112225_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250424160002_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,13 +36,18 @@ namespace IntihalProjesi.Migrations
                     b.Property<double>("BenzerlikOrani")
                         .HasColumnType("float");
 
-                    b.Property<int>("IkinciDosyaId")
+                    b.Property<int?>("IcerikId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IlkDosyaId")
+                    b.Property<int?>("IkinciDosyaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IlkDosyaId")
                         .HasColumnType("int");
 
                     b.HasKey("SonucId");
+
+                    b.HasIndex("IcerikId");
 
                     b.HasIndex("IkinciDosyaId");
 
@@ -129,6 +134,10 @@ namespace IntihalProjesi.Migrations
                     b.Property<DateTime?>("BitisTarihi")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("IcerikTuru")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("KullaniciId")
                         .HasColumnType("int");
 
@@ -188,17 +197,22 @@ namespace IntihalProjesi.Migrations
 
             modelBuilder.Entity("IntihalProjesi.Models.BenzerlikSonucu", b =>
                 {
+                    b.HasOne("IntihalProjesi.Models.Icerik", "Icerik")
+                        .WithMany()
+                        .HasForeignKey("IcerikId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("IntihalProjesi.Models.Dosya", "IkinciDosya")
                         .WithMany()
                         .HasForeignKey("IkinciDosyaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("IntihalProjesi.Models.Dosya", "IlkDosya")
                         .WithMany()
                         .HasForeignKey("IlkDosyaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Icerik");
 
                     b.Navigation("IkinciDosya");
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntihalProjesi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,6 +36,7 @@ namespace IntihalProjesi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Baslik = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Aciklama = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IcerikTuru = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OlusturmaTarihi = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BitisTarihi = table.Column<DateTime>(type: "datetime2", nullable: true),
                     KullaniciId = table.Column<int>(type: "int", nullable: false)
@@ -112,8 +113,9 @@ namespace IntihalProjesi.Migrations
                 {
                     SonucId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IlkDosyaId = table.Column<int>(type: "int", nullable: false),
-                    IkinciDosyaId = table.Column<int>(type: "int", nullable: false),
+                    IlkDosyaId = table.Column<int>(type: "int", nullable: true),
+                    IkinciDosyaId = table.Column<int>(type: "int", nullable: true),
+                    IcerikId = table.Column<int>(type: "int", nullable: true),
                     BenzerlikOrani = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -131,12 +133,23 @@ namespace IntihalProjesi.Migrations
                         principalTable: "Dosyalar",
                         principalColumn: "DosyaId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BenzerlikSonuclari_Icerikler_IcerikId",
+                        column: x => x.IcerikId,
+                        principalTable: "Icerikler",
+                        principalColumn: "IcerikId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Kullanicilar",
                 columns: new[] { "KullaniciId", "Ad", "Eposta", "Rol", "Sifre", "Soyad" },
                 values: new object[] { 1, "emre", "emre@gmail.com", "Admin", "emre123", "almamış" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BenzerlikSonuclari_IcerikId",
+                table: "BenzerlikSonuclari",
+                column: "IcerikId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BenzerlikSonuclari_IkinciDosyaId",

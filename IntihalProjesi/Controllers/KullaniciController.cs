@@ -42,7 +42,7 @@ namespace IntihalProjesi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, KullaniciUpdateDto kullaniciDto)
+        public async Task<IActionResult> Update(int id,[FromBody] KullaniciUpdateDto kullaniciDto)
         {
             await _manager.KullaniciService.UpdateAsync(id, kullaniciDto);
             return NoContent();
