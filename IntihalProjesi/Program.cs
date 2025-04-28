@@ -88,12 +88,12 @@ builder.Services
         };
     });
 
-// HttpContext access (if needed)
+// HttpContext access 
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-// Middleware pipeline
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
