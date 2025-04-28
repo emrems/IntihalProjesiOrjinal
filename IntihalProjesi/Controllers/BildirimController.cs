@@ -1,10 +1,12 @@
 ﻿using IntihalProjesi.Dtos.Bildirim;
 using IntihalProjesi.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace IntihalProjesi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BildirimController : ControllerBase

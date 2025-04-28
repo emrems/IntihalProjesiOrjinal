@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,68 +9,84 @@ using IntihalProjesi.Helpers.Contract;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-public class JwtHelper : IJwtHelper
+namespace IntihalProjesi.Helpers
 {
-    private readonly string _key;
-    private readonly string _issuer;
-    private readonly string _audience;
-
-    public JwtHelper(IConfiguration configuration)
+    public class JwtHelper : IJwtHelper
     {
-        _key = configuration["JWT:Key"];
-        _issuer = configuration["JWT:Issuer"];
-        _audience = configuration["JWT:Audience"];
-    }
+        private readonly string _key;
+        private readonly string _issuer;
+        private readonly string _audience;
+        private readonly int _durationInSeconds;
 
-    public (int KullaniciId, string Rol)? DecodeToken(string token)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        try
+        public JwtHelper(IConfiguration configuration)
         {
-            var jwtToken = handler.ReadJwtToken(token);
-            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            _key = configuration["JWT:Key"] ?? throw new ArgumentNullException("JWT:Key");
+            _issuer = configuration["JWT:Issuer"] ?? throw new ArgumentNullException("JWT:Issuer");
+            _audience = configuration["JWT:Audience"] ?? throw new ArgumentNullException("JWT:Audience");
 
-            if (userIdClaim == null || roleClaim == null)
+            // appsettings.json içindeki saniye cinsinden süre
+            if (!int.TryParse(configuration["JWT:DurationInSeconds"], out _durationInSeconds))
+            {
+                _durationInSeconds = 60;  // fallback: 60 saniye
+            }
+        }
+
+        public (int KullaniciId, string Rol)? DecodeToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                var jwtToken = handler.ReadJwtToken(token);
+                var userIdClaim = jwtToken.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                var roleClaim = jwtToken.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+                if (userIdClaim == null || roleClaim == null)
+                    return null;
+
+                return (int.Parse(userIdClaim), roleClaim);
+            }
+            catch
+            {
                 return null;
-
-            return (int.Parse(userIdClaim), roleClaim);
+            }
         }
-        catch
+
+        public string GenerateRefreshToken()
         {
-            return null;
+            var randomNumber = new byte[64];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+            return Convert.ToBase64String(randomNumber);
         }
-    }
 
-
-    public string GenerateRefreshToken()
-    {
-        var randomNumber = new byte[64];
-        using (var rng = RandomNumberGenerator.Create())
+        public string GenerateToken(int kullaniciId, string rol)
         {
-            rng.GetBytes(randomNumber);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, kullaniciId.ToString()),
+                new Claim(ClaimTypes.Role, rol)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // Burada saniye cinsinden konfigürasyondaki değeri kullanıyoruz
+            var expires = DateTime.UtcNow.AddSeconds(_durationInSeconds);
+
+            var jwt = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
-        return Convert.ToBase64String(randomNumber);
-    }
-
-    public string GenerateToken(int kullaniciId, string rol)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, kullaniciId.ToString()),
-            new Claim(ClaimTypes.Role, rol)
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _issuer,
-            audience: _audience,
-            claims: claims,
-            expires: DateTime.Now.AddHours(1), // Token geçerlilik süresi
-            signingCredentials: creds);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
+    

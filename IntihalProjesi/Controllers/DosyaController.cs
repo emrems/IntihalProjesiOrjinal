@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Threading.Tasks;
-using Aspose.Words; 
+using Aspose.Words;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntihalProjesi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DosyaController : ControllerBase
