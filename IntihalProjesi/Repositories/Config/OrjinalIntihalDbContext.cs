@@ -13,9 +13,18 @@ namespace IntihalProjesi.Repositories.Config
         public DbSet<Dosya> Dosyalar { get; set; }
         public DbSet<BenzerlikSonucu> BenzerlikSonuclari { get; set; }
         public DbSet<Bildirim> Bildirimler { get; set; }
+        public DbSet<JplagJob> JplagJobs { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<JplagJob>()
+                .HasKey(j=>j.JobId); 
+            modelBuilder.Entity<JplagJob>()
+                .HasOne(j => j.Icerik)
+                .WithMany(i => i.JplagJobs)
+                .HasForeignKey(j => j.IcerikId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Kullanici>()
                 .HasKey(k => k.KullaniciId);
 

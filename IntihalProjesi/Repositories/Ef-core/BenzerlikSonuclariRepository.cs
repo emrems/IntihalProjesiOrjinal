@@ -24,15 +24,18 @@ namespace IntihalProjesi.Repositories.Ef_core
                                where d1.IcerikId == icerikId || d2.IcerikId == icerikId
                                select new
                                {
+                                   IcerikId = icerikId,                     // <-- Bunu ekledik
                                    BenzerlikOrani = b.BenzerlikOrani,
-                                   IlkKullaniciAdiSoyad = k1.Ad + " " + k1.Soyad, // Ad ve Soyad birleştirildi
-                                   IkinciKullaniciAdiSoyad = k2.Ad + " " + k2.Soyad, // Ad ve Soyad birleştirildi
-                                   IlkDosyaCleanPath = d1.CleanedPath, // İlk dosyanın CleanPath'ı
-                                   IkinciDosyaCleanPath = d2.CleanedPath // İkinci dosyanın CleanPath'ı
-                               }).ToListAsync();
+                                   IlkKullaniciAdiSoyad = k1.Ad + " " + k1.Soyad,
+                                   IkinciKullaniciAdiSoyad = k2.Ad + " " + k2.Soyad,
+                                   IlkDosyaCleanPath = d1.CleanedPath,
+                                   IkinciDosyaCleanPath = d2.CleanedPath
+                               })
+                              .ToListAsync();
 
             return query.Cast<dynamic>().ToList();
         }
+
 
 
     }
