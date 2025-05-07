@@ -24,7 +24,7 @@ namespace IntihalProjesi.Repositories.Ef_core
                                where d1.IcerikId == icerikId || d2.IcerikId == icerikId
                                select new
                                {
-                                   IcerikId = icerikId,                     // <-- Bunu ekledik
+                                   IcerikId = icerikId,                    
                                    BenzerlikOrani = b.BenzerlikOrani,
                                    IlkKullaniciAdiSoyad = k1.Ad + " " + k1.Soyad,
                                    IkinciKullaniciAdiSoyad = k2.Ad + " " + k2.Soyad,

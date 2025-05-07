@@ -1,4 +1,5 @@
-﻿using IntihalProjesi.Models;
+﻿using IntihalProjesi.Dtos.IcerikDtos;
+using IntihalProjesi.Models;
 
 namespace IntihalProjesi.Repositories.Contracts
 {
@@ -16,6 +17,8 @@ namespace IntihalProjesi.Repositories.Contracts
         //belli öğrtemenId'ye göre ödevleri getir
         Task<IEnumerable<Icerik>> GetByTeacherIdAsync(int teacherId);
         Task<IEnumerable<Icerik>> GetAllAsync(); // Tüm içerikleri getir
+
+        Task<Icerik> GetDetailsIcerik(int contentId); // İçerik detaylarını getir
 
 
     }

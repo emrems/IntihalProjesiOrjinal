@@ -96,5 +96,16 @@ namespace IntihalProjesi.Services
             }
             return _mapper.Map<IEnumerable<IcerikReadDto>>(assigments);
         }
+
+        public async Task<IcerikDetailsDto> GetDetailsIcerik(int contentId)
+        {
+            var icerik = await _repository.IcerikRepository.GetDetailsIcerik(contentId);
+            if (icerik == null)
+            {
+                throw new Exception("İçerik bulunamadı.");
+            }
+
+            return _mapper.Map<IcerikDetailsDto>(icerik);
+        }   
     }
 }

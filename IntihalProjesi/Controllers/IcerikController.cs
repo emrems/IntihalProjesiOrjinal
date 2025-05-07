@@ -45,6 +45,21 @@ namespace IntihalProjesi.Controllers
             }
         }
 
+        [HttpGet("details/{contentId}")]
+        public async Task<IActionResult> GetDetailsByIcerikId( int contentId)
+        {
+            try
+            {
+                var ıcerikler= await _manager.IcerikService.GetDetailsIcerik(contentId);
+                return Ok(ıcerikler);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Bir hata oluştu.", Error = ex.Message });
+            }
+        }
+
+
         [HttpGet("teacher/{teacherId}/all")]
         public async Task<IActionResult> GetAssigmentByTeacherId(int teacherId)
         {

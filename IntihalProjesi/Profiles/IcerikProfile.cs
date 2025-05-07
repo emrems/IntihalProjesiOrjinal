@@ -17,6 +17,14 @@ namespace IntihalProjesi.Profiles
 
             CreateMap<IcerikCreateDto, Icerik>();
             CreateMap<IcerikUpdateDto, Icerik>();
+            CreateMap<Icerik, IcerikDetailsDto>()
+            .ForMember(dest => dest.KullaniciAd,
+                opt => opt.MapFrom(src => src.Kullanici.Ad))
+            .ForMember(dest => dest.KullaniciSoyad,
+                opt => opt.MapFrom(src => src.Kullanici.Soyad))
+            .ForMember(dest => dest.KullaniciEposta,
+                opt => opt.MapFrom(src => src.Kullanici.Eposta));
+
         }
     }
 }

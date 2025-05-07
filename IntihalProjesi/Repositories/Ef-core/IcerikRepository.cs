@@ -1,4 +1,5 @@
-﻿using IntihalProjesi.Models;
+﻿using IntihalProjesi.Dtos.IcerikDtos;
+using IntihalProjesi.Models;
 using IntihalProjesi.Repositories.Config;
 using IntihalProjesi.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,13 @@ namespace IntihalProjesi.Repositories.Ef_core
                // .Include(i => i.Kullanici) // Kullanıcı bilgilerini dahil et detay göstermek için
                 .Where(i => i.KullaniciId == teacherId)
                 .ToListAsync();
+        }
+
+        public async Task<Icerik> GetDetailsIcerik(int contentId)
+        {
+            return await _context.Icerikler
+                .Include(i => i.Kullanici)
+                .FirstOrDefaultAsync(i => i.IcerikId == contentId);
         }
     }
 }

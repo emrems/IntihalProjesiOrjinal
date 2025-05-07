@@ -21,6 +21,7 @@ namespace IntihalProjesi.Services.Contracts
 
         // Yeni bir ödev oluşturmak
         Task<IcerikReadDto> CreateAsync(IcerikCreateDto icerikCreateDto);
+        Task<IcerikDetailsDto> GetDetailsIcerik(int contentId); // İçerik detaylarını getir
 
         // Belirli bir ödevi güncellemek
         Task UpdateAsync(int id, IcerikUpdateDto icerikCreateDto);
