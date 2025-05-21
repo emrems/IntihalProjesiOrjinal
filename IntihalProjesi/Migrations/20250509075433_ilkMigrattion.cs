@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntihalProjesi.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class ilkMigrattion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,7 +49,7 @@ namespace IntihalProjesi.Migrations
                         column: x => x.KullaniciId,
                         principalTable: "Kullanicilar",
                         principalColumn: "KullaniciId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,7 +77,7 @@ namespace IntihalProjesi.Migrations
                         column: x => x.KullaniciId,
                         principalTable: "Kullanicilar",
                         principalColumn: "KullaniciId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,8 +87,8 @@ namespace IntihalProjesi.Migrations
                     DosyaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CleanedPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KullaniciId = table.Column<int>(type: "int", nullable: false),
-                    IcerikId = table.Column<int>(type: "int", nullable: false)
+                    KullaniciId = table.Column<int>(type: "int", nullable: true),
+                    IcerikId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -104,7 +104,28 @@ namespace IntihalProjesi.Migrations
                         column: x => x.KullaniciId,
                         principalTable: "Kullanicilar",
                         principalColumn: "KullaniciId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JplagJobs",
+                columns: table => new
+                {
+                    JobId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZipPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IcerikId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JplagJobs", x => x.JobId);
+                    table.ForeignKey(
+                        name: "FK_JplagJobs_Icerikler_IcerikId",
+                        column: x => x.IcerikId,
+                        principalTable: "Icerikler",
+                        principalColumn: "IcerikId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,7 +153,7 @@ namespace IntihalProjesi.Migrations
                         column: x => x.IlkDosyaId,
                         principalTable: "Dosyalar",
                         principalColumn: "DosyaId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_BenzerlikSonuclari_Icerikler_IcerikId",
                         column: x => x.IcerikId,
@@ -185,6 +206,11 @@ namespace IntihalProjesi.Migrations
                 name: "IX_Icerikler_KullaniciId",
                 table: "Icerikler",
                 column: "KullaniciId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JplagJobs_IcerikId",
+                table: "JplagJobs",
+                column: "IcerikId");
         }
 
         /// <inheritdoc />
@@ -195,6 +221,9 @@ namespace IntihalProjesi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Bildirimler");
+
+            migrationBuilder.DropTable(
+                name: "JplagJobs");
 
             migrationBuilder.DropTable(
                 name: "Dosyalar");

@@ -7,10 +7,10 @@
         public string? CleanedPath { get; set; } // Cleaned File Path (Temizlenmiş dosyanın yolu)
 
 
-        public int KullaniciId { get; set; } // Foreign Key
+        public int? KullaniciId { get; set; } // Foreign Key
         public Kullanici? Kullanici { get; set; } // Navigation Property
 
-        public int IcerikId { get; set; } // Foreign Key
+        public int? IcerikId { get; set; } // Foreign Key
         public Icerik? Icerik { get; set; } // Navigation Property
     }
 }

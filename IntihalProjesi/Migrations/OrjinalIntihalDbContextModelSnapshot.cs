@@ -97,10 +97,10 @@ namespace IntihalProjesi.Migrations
                     b.Property<string>("CleanedPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IcerikId")
+                    b.Property<int?>("IcerikId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KullaniciId")
+                    b.Property<int?>("KullaniciId")
                         .HasColumnType("int");
 
                     b.HasKey("DosyaId");
@@ -233,7 +233,7 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Dosya", "IlkDosya")
                         .WithMany()
                         .HasForeignKey("IlkDosyaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Icerik");
 
@@ -251,7 +251,7 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Kullanici", "Kullanici")
                         .WithMany("Bildirimler")
                         .HasForeignKey("KullaniciId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Kullanici");
@@ -262,14 +262,12 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Icerik", "Icerik")
                         .WithMany("Dosyalar")
                         .HasForeignKey("IcerikId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("IntihalProjesi.Models.Kullanici", "Kullanici")
                         .WithMany()
                         .HasForeignKey("KullaniciId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Icerik");
 
@@ -281,7 +279,7 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Kullanici", "Kullanici")
                         .WithMany("Icerikler")
                         .HasForeignKey("KullaniciId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Kullanici");
@@ -292,7 +290,7 @@ namespace IntihalProjesi.Migrations
                     b.HasOne("IntihalProjesi.Models.Icerik", "Icerik")
                         .WithMany("JplagJobs")
                         .HasForeignKey("IcerikId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Icerik");
