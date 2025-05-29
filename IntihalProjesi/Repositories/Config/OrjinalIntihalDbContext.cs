@@ -14,6 +14,7 @@ namespace IntihalProjesi.Repositories.Config
         public DbSet<BenzerlikSonucu> BenzerlikSonuclari { get; set; }
         public DbSet<Bildirim> Bildirimler { get; set; }
         public DbSet<JplagJob> JplagJobs { get; set; }
+        public DbSet<ComparisonJsonDetail> ComparisonJsonDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,6 +75,27 @@ namespace IntihalProjesi.Repositories.Config
                 .WithMany(k => k.Bildirimler)
                 .HasForeignKey(b => b.KullaniciId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Icerik ile ilişki
+            modelBuilder.Entity<ComparisonJsonDetail>()
+                .HasOne(c => c.Content)
+                .WithMany(i => i.ComparisonJsonDetails)
+                .HasForeignKey(c => c.ContentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // FirstFile ile ilişki
+            modelBuilder.Entity<ComparisonJsonDetail>()
+                .HasOne(c => c.FirstFile)
+                .WithMany(d => d.FirstFileComparisons)
+                .HasForeignKey(c => c.FirstFileId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // SecondFile ile ilişki
+            modelBuilder.Entity<ComparisonJsonDetail>()
+                .HasOne(c => c.SecondFile)
+                .WithMany(d => d.SecondFileComparisons)
+                .HasForeignKey(c => c.SecondFileId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Kullanici>().HasData(
                 new Kullanici

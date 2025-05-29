@@ -12,5 +12,7 @@
 
         public int? IcerikId { get; set; } // Foreign Key
         public Icerik? Icerik { get; set; } // Navigation Property
+        public virtual ICollection<ComparisonJsonDetail> FirstFileComparisons { get; set; } = new List<ComparisonJsonDetail>();
+        public virtual ICollection<ComparisonJsonDetail> SecondFileComparisons { get; set; } = new List<ComparisonJsonDetail>();
     }
 }

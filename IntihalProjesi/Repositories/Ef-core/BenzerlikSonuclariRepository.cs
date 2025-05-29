@@ -29,7 +29,9 @@ namespace IntihalProjesi.Repositories.Ef_core
                                    IlkKullaniciAdiSoyad = k1.Ad + " " + k1.Soyad,
                                    IkinciKullaniciAdiSoyad = k2.Ad + " " + k2.Soyad,
                                    IlkDosyaCleanPath = d1.CleanedPath,
-                                   IkinciDosyaCleanPath = d2.CleanedPath
+                                   IkinciDosyaCleanPath = d2.CleanedPath,
+                                   file1_id = b.IlkDosyaId,
+                                   file2_id = b.IkinciDosyaId,
                                })
                               .ToListAsync();
 

@@ -45,7 +45,7 @@ namespace IntihalProjesi.Repositories.Ef_core
         public async Task<Icerik> GetByIdAsync(int id)
         {
             return await _context.Icerikler
-               // .Include(i => i.Kullanici) // Kullanıcı bilgilerini dahil et
+                .Include(i => i.Kullanici) // Kullanıcı bilgilerini dahil et
                 .FirstOrDefaultAsync(i => i.IcerikId == id);
         }
 

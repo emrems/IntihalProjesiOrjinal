@@ -19,5 +19,6 @@ namespace IntihalProjesi.Models
         public ICollection<Dosya> Dosyalar { get; set; } // İçeriğe bağlı dosyalar
         public ICollection<Bildirim> Bildirimler { get; set; } = new List<Bildirim>();
         public ICollection<JplagJob> JplagJobs { get; set; } = new List<JplagJob>();
+        public virtual ICollection<ComparisonJsonDetail> ComparisonJsonDetails { get; set; } = new List<ComparisonJsonDetail>();
     }
 }

@@ -28,7 +28,7 @@ namespace IntihalProjesi.Controllers
 
         [HttpGet("id")]
 
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById( int id)
         {
             try
             {
@@ -110,9 +110,6 @@ namespace IntihalProjesi.Controllers
                 return BadRequest();
 
             }
-            
-
-
             await _manager.IcerikService.CreateAsync(icerik);
             return Ok(icerik);
         }
